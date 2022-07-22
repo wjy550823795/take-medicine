@@ -18,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 public class SendController {
 
-    @PostMapping("send")
+    @PostMapping("/send")
     public void send(String code) {
         WechatAppTokenDto openIdInMiniApp = getOpenIdInMiniApp(code);
         sendVlogCompleteTemplateMsg(openIdInMiniApp.getOpenid());
