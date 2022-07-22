@@ -82,6 +82,7 @@ public class SendController {
         wxMsgDto.setPage("pages/index/index");
 
         Map<String, Object> map = new HashMap<>(5);
+        //todo 改值
         //根据从小程序中的模板获取的参数，进行赋值
         map.put("thing1.DATA", "药品");
         map.put("time2.DATA", "时间");
