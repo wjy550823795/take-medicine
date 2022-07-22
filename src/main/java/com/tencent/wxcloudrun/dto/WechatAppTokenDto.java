@@ -14,6 +14,7 @@ public class WechatAppTokenDto {
     public String sessionKey;
 
     public String unionId;
+
 }
 
 

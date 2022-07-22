@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.dto.WechatAppTokenDto;
 import com.tencent.wxcloudrun.dto.WxMsgDto;
+import com.tencent.wxcloudrun.dto.WxTemplateDataDto;
 import com.tencent.wxcloudrun.service.impl.RobotToken;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,19 +76,18 @@ public class SendController {
         //拼接推送的模版
         WxMsgDto wxMsgDto = new WxMsgDto();
         //用户的openid（要发送给的那个用户）
-        wxMsgDto.setOpenId(openId);
+        wxMsgDto.setTouser(openId);
         //订阅消息模板id
-        wxMsgDto.setTemplateId("LtP5EeXT9QYlnfcgAgFI9b2r-d8LNmlt7P-Tt-nz9sk");
+        wxMsgDto.setTemplate_id("LtP5EeXT9QYlnfcgAgFI9b2r-d8LNmlt7P-Tt-nz9sk");
         //点击消息跳转的页面
         wxMsgDto.setPage("pages/index/index");
 
-        Map<String, Object> map = new HashMap<>(5);
-        //todo 改值
+        Map<String, WxTemplateDataDto> map = new HashMap<>(5);
         //根据从小程序中的模板获取的参数，进行赋值
-        map.put("thing1.DATA", "药品");
-        map.put("time2.DATA", "时间");
-        map.put("phrase3.DATA", "状态");
-        map.put("thing5.DATA", "患者姓名");
+        map.put("thing1", new WxTemplateDataDto("药品"));
+        map.put("time2", new WxTemplateDataDto("时间"));
+        map.put("phrase3", new WxTemplateDataDto("状态"));
+        map.put("thing5", new WxTemplateDataDto("患者姓名"));
         wxMsgDto.setData(map);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, wxMsgDto, String.class);
         return responseEntity.getBody();
