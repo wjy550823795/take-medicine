@@ -63,10 +63,10 @@ public class SendController {
     /**
      * 发送视频完成模板消息
      *
-     * @param openid 用户的openid
+     * @param openId 用户的openId
      * @return 结果。发送成功，返回值实例：{"errcode":0,"errmsg":"ok","msgid":11111}
      */
-    public String sendVlogCompleteTemplateMsg(String openid) {
+    public String sendVlogCompleteTemplateMsg(String openId) {
         RobotToken robotToken = new RobotToken();
         RestTemplate restTemplate = new RestTemplate();
         //发送订阅消息的url，官网地址：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html
@@ -75,7 +75,7 @@ public class SendController {
         //拼接推送的模版
         WxMsgDto wxMsgDto = new WxMsgDto();
         //用户的openid（要发送给的那个用户）
-        wxMsgDto.setOpenId(openid);
+        wxMsgDto.setOpenId(openId);
         //订阅消息模板id
         wxMsgDto.setTemplateId("LtP5EeXT9QYlnfcgAgFI9b2r-d8LNmlt7P-Tt-nz9sk");
         //点击消息跳转的页面
