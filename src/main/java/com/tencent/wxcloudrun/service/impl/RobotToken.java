@@ -25,8 +25,10 @@ public class RobotToken {
         if (accessToken == null || expiresTime < System.currentTimeMillis()) {
             RestTemplate restTemplate = new RestTemplate();
             Map<String, String> params = new HashMap<>(2);
-            params.put("APPID", "小程序的APPID");
-            params.put("APPSECRET", "小程序的APPSECRET");
+            String appId = "wx45657c6db53f14c5";
+            String appSecret = "841f5d9f0418ee4da9a007f123effaec";
+            params.put("APPID", appId);
+            params.put("APPSECRET", appSecret);
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(
                 "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={APPID}&secret={APPSECRET}",
                 String.class, params);
