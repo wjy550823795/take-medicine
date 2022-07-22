@@ -69,6 +69,7 @@ public class SendController {
         wxMsgDto.setData(map);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, wxMsgDto, String.class);
         String body = responseEntity.getBody();
+        log.info("sendVlogCompleteTemplateMsg:{}", body);
         return body;
     }
 
