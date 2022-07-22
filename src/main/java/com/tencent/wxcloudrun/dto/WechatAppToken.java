@@ -3,7 +3,7 @@ package com.tencent.wxcloudrun.dto;
 import lombok.Data;
 
 @Data
-public class WechatAppTokenDto {
+public class WechatAppToken {
 
     public Integer errcode;
 

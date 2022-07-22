@@ -1,9 +1,8 @@
 package com.tencent.wxcloudrun.service.impl;
 
-import com.tencent.wxcloudrun.dto.WechatAppTokenDto;
-import java.util.ArrayList;
+import com.tencent.wxcloudrun.dto.WechatAppToken;
+import com.tencent.wxcloudrun.util.RestTemplateUtil;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,16 +15,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class UserCode {
 
 
-    public static final Set<WechatAppTokenDto> wechatAppTokenDtoList = new HashSet<>();
+    protected static final Set<WechatAppToken> WECHAT_APP_TOKEN_LIST = new HashSet<>();
 
 
-    public Set<WechatAppTokenDto> getWechatAppTokenDtoList(){
-        return wechatAppTokenDtoList;
+    public Set<WechatAppToken> getWechatAppTokenDtoList() {
+        return WECHAT_APP_TOKEN_LIST;
     }
 
     public void setCode(String code) {
-        WechatAppTokenDto openIdInMiniApp = getOpenIdInMiniApp(code);
-        wechatAppTokenDtoList.add(openIdInMiniApp);
+        WechatAppToken openIdInMiniApp = getOpenIdInMiniApp(code);
+        if (openIdInMiniApp.getOpenid() != null) {
+            WECHAT_APP_TOKEN_LIST.add(openIdInMiniApp);
+        }
+
     }
 
     /**
@@ -36,13 +38,13 @@ public class UserCode {
      * @param code      前端传过来的code
      * @return WechatAppToken
      */
-    public WechatAppTokenDto getOpenIdInMiniApp(String code) {
+    public WechatAppToken getOpenIdInMiniApp(String code) {
         String appId = "wx45657c6db53f14c5";
         String appSecret = "841f5d9f0418ee4da9a007f123effaec";
         if (code.isEmpty()) {
             log.info("code不能为空");
         }
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = RestTemplateUtil.getInstance();
         String requestUrl = UriComponentsBuilder.fromHttpUrl(
                 "https://api.weixin.qq.com/sns/jscode2session")
             .queryParam("appid", appId)
@@ -51,7 +53,7 @@ public class UserCode {
             .queryParam("grant_type", "authorization_code")
             .build().encode().toUriString();
         try {
-            WechatAppTokenDto result = restTemplate.getForObject(requestUrl, WechatAppTokenDto.class);
+            WechatAppToken result = restTemplate.getForObject(requestUrl, WechatAppToken.class);
             log.info("wxchat Result:{}", result);
             if (result == null || result.errcode != null) {
                 log.info("getUnionIdInMiniApp error");

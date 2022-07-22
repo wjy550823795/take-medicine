@@ -1,7 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.tencent.wxcloudrun.dto.WechatAppTokenDto;
+import com.tencent.wxcloudrun.dto.WechatAppToken;
 import com.tencent.wxcloudrun.dto.WxMsgDto;
 import com.tencent.wxcloudrun.dto.WxTemplateDataDto;
 import com.tencent.wxcloudrun.service.impl.RobotToken;
@@ -26,9 +26,9 @@ public class SendController {
 
     @PostMapping("/send")
     public void send() {
-        Set<WechatAppTokenDto> set = userCode.getWechatAppTokenDtoList();
+        Set<WechatAppToken> set = userCode.getWechatAppTokenDtoList();
         log.info("set:{}", JSON.toJSONString(set));
-        set.forEach(wechatAppTokenDto -> sendVlogCompleteTemplateMsg(wechatAppTokenDto.getOpenid()));
+        set.forEach(wechatAppToken -> sendVlogCompleteTemplateMsg(wechatAppToken.getOpenid()));
     }
 
     @PostMapping("/setCode")
