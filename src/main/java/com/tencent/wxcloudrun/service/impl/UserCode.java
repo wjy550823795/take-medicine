@@ -1,12 +1,12 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dto.WechatAppToken;
 import com.tencent.wxcloudrun.util.RestTemplateUtil;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,8 +23,9 @@ public class UserCode {
     }
 
     public void setCode(String code) {
+        log.info("setCode:{}", code);
         WechatAppToken openIdInMiniApp = getOpenIdInMiniApp(code);
-        if (openIdInMiniApp.getOpenid() != null) {
+        if (openIdInMiniApp != null && openIdInMiniApp.getOpenid() != null) {
             WECHAT_APP_TOKEN_LIST.add(openIdInMiniApp);
         }
 
@@ -54,14 +55,14 @@ public class UserCode {
             .build().encode().toUriString();
         try {
             WechatAppToken result = restTemplate.getForObject(requestUrl, WechatAppToken.class);
-            log.info("wxchat Result:{}", result);
+            log.info("wechat Result:{}", result);
             if (result == null || result.errcode != null) {
-                log.info("getUnionIdInMiniApp error");
+                log.info("getUnionIdInMiniApp result error:{}", JSON.toJSONString(result));
                 // 抛个异常
             }
             return result;
-        } catch (RestClientResponseException ex) {
-            log.info("getUnionIdInMiniApp error");
+        } catch (Exception ex) {
+            log.info("getUnionIdInMiniApp error:", ex);
         }
         return null;
     }
