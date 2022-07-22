@@ -1,63 +1,39 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dto.WechatAppTokenDto;
 import com.tencent.wxcloudrun.dto.WxMsgDto;
 import com.tencent.wxcloudrun.dto.WxTemplateDataDto;
 import com.tencent.wxcloudrun.service.impl.RobotToken;
+import com.tencent.wxcloudrun.service.impl.UserCode;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @RestController
 public class SendController {
 
+    @Autowired
+    UserCode userCode;
+
+
     @PostMapping("/send")
-    public void send(String code) {
-        WechatAppTokenDto openIdInMiniApp = getOpenIdInMiniApp(code);
-        sendVlogCompleteTemplateMsg(openIdInMiniApp.getOpenid());
+    public void send() {
+        Set<WechatAppTokenDto> set = userCode.getWechatAppTokenDtoList();
+        log.info("set:{}", JSON.toJSONString(set));
+        set.forEach(wechatAppTokenDto -> sendVlogCompleteTemplateMsg(wechatAppTokenDto.getOpenid()));
     }
 
-    /**
-     * 解析code，获取openId
-     *
-     * @param appId     小程序的appId
-     * @param appSecret 小程序的appSecret
-     * @param code      前端传过来的code
-     * @return WechatAppToken
-     */
-    public WechatAppTokenDto getOpenIdInMiniApp(String code) {
-        String appId = "wx45657c6db53f14c5";
-        String appSecret = "841f5d9f0418ee4da9a007f123effaec";
-        if (code.isEmpty()) {
-            log.info("code不能为空");
-        }
-        RestTemplate restTemplate = new RestTemplate();
-        String requestUrl = UriComponentsBuilder.fromHttpUrl(
-                "https://api.weixin.qq.com/sns/jscode2session")
-            .queryParam("appid", appId)
-            .queryParam("secret", appSecret)
-            .queryParam("js_code", code)
-            .queryParam("grant_type", "authorization_code")
-            .build().encode().toUriString();
-        try {
-            WechatAppTokenDto result = restTemplate.getForObject(requestUrl, WechatAppTokenDto.class);
-            log.info("wxchat Result:{}", result);
-            if (result == null || result.errcode != null) {
-                log.info("getUnionIdInMiniApp error");
-                // 抛个异常
-            }
-            return result;
-        } catch (RestClientResponseException ex) {
-            log.info("getUnionIdInMiniApp error");
-        }
-        return null;
+    @PostMapping("/setCode")
+    public void send(String code) {
+        userCode.setCode(code);
     }
 
 
