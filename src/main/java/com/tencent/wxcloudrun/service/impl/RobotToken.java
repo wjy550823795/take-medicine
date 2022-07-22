@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.tencent.wxcloudrun.util.RestTemplateUtil;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ public class RobotToken {
     public String getAccessToken() {
         // 判断accessToken是否已经过期，如果过期需要重新获取
         if (accessToken == null || expiresTime < System.currentTimeMillis()) {
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = RestTemplateUtil.getInstance();
             Map<String, String> params = new HashMap<>(2);
             String appId = "wx45657c6db53f14c5";
             String appSecret = "841f5d9f0418ee4da9a007f123effaec";
@@ -43,7 +44,7 @@ public class RobotToken {
             // 缓存accessToken
             accessToken = object.getString("access_token");
             // 设置accessToken的失效时间
-            long expiresIn = object.getLong("expiresIn");
+            long expiresIn = object.getLong("expires_in");
             // 失效时间 = 当前时间 + 有效期(提前一分钟，也可不提前，这里只是稳妥一下)
             expiresTime = System.currentTimeMillis() + (expiresIn - 60) * 1000;
         }

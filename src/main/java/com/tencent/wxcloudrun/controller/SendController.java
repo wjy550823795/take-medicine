@@ -6,12 +6,14 @@ import com.tencent.wxcloudrun.dto.WxMsgDto;
 import com.tencent.wxcloudrun.dto.WxTemplateDataDto;
 import com.tencent.wxcloudrun.service.impl.RobotToken;
 import com.tencent.wxcloudrun.service.impl.UserCode;
+import com.tencent.wxcloudrun.util.RestTemplateUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -31,7 +33,7 @@ public class SendController {
         set.forEach(wechatAppToken -> sendVlogCompleteTemplateMsg(wechatAppToken.getOpenid()));
     }
 
-    @PostMapping("/setCode")
+    @GetMapping("/setCode")
     public void send(String code) {
         userCode.setCode(code);
     }
@@ -45,7 +47,7 @@ public class SendController {
      */
     public String sendVlogCompleteTemplateMsg(String openId) {
         RobotToken robotToken = new RobotToken();
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = RestTemplateUtil.getInstance();
         //发送订阅消息的url，官网地址：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html
         String url =
             "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + robotToken.getAccessToken();
@@ -66,7 +68,8 @@ public class SendController {
         map.put("thing5", new WxTemplateDataDto("患者姓名"));
         wxMsgDto.setData(map);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, wxMsgDto, String.class);
-        return responseEntity.getBody();
+        String body = responseEntity.getBody();
+        return body;
     }
 
 }
