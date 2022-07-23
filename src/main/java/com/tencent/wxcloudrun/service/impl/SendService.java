@@ -6,6 +6,9 @@ import com.tencent.wxcloudrun.dto.WxMsgDto;
 import com.tencent.wxcloudrun.dto.WxTemplateDataDto;
 import com.tencent.wxcloudrun.util.RestTemplateUtil;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +61,9 @@ public class SendService {
         Map<String, WxTemplateDataDto> map = new HashMap<>(5);
         //根据从小程序中的模板获取的参数，进行赋值
         map.put("thing1", new WxTemplateDataDto("吃药啦"));
-        map.put("time2", new WxTemplateDataDto(LocalDateTime.now().format(YYYY_MM_DD_HH_MM)));
+        ZonedDateTime zonedtime = LocalDateTime.now().atZone(ZoneId.from(ZoneOffset.UTC));
+        ZonedDateTime converted = zonedtime.withZoneSameInstant(ZoneOffset.ofHours(8));
+        map.put("time2", new WxTemplateDataDto(converted.toLocalDateTime().format(YYYY_MM_DD_HH_MM)));
         map.put("phrase3", new WxTemplateDataDto("未吃药"));
         map.put("thing5", new WxTemplateDataDto("王馋馋"));
         wxMsgDto.setData(map);

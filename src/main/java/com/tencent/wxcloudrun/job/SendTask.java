@@ -9,8 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
- * 定时任务，主类加上@Component和@EnableScheduling注解，在方法上加上@Scheduled注解
- * 注意的是，可以加个开关来决定任务是否执行
+ * 定时任务，主类加上@Component和@EnableScheduling注解，在方法上加上@Scheduled注解 注意的是，可以加个开关来决定任务是否执行
  */
 @Slf4j
 @Component
@@ -20,7 +19,7 @@ public class SendTask {
     @Autowired
     SendService sendService;
 
-    @Scheduled(cron = "0 50 9,12,20 * * ? ")
+    @Scheduled(cron = "0 50 9,12,20 * * ? ", zone = "UTC+8")
     public void haha() {
         log.info("job start ==================");
         sendService.sendTemplate();
