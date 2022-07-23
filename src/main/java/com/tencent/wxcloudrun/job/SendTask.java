@@ -19,7 +19,7 @@ public class SendTask {
     @Autowired
     SendService sendService;
 
-    @Scheduled(cron = "0 50 9,12,20 * * ? ", zone = "UTC+8")
+    @Scheduled(cron = "0 50 9,12,20 * * ? ", zone = "Asia/Shanghai")
     public void haha() {
         log.info("job start ==================");
         sendService.sendTemplate();
