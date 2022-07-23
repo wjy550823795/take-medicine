@@ -7,12 +7,13 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
-@Component
-public class UserCode {
+@Service
+public class UserCodeService {
 
 
     protected static final Set<WechatAppToken> WECHAT_APP_TOKEN_LIST = new HashSet<>();

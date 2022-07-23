@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
-public class RobotToken {
+@Component
+public class RobotTokenComponent {
     /**
      * 缓存的access_token
      */
