@@ -7,6 +7,8 @@ import com.tencent.wxcloudrun.dto.WxTemplateDataDto;
 import com.tencent.wxcloudrun.service.impl.RobotToken;
 import com.tencent.wxcloudrun.service.impl.UserCode;
 import com.tencent.wxcloudrun.util.RestTemplateUtil;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +23,8 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @RestController
 public class SendController {
+
+    public static final DateTimeFormatter YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
 
     @Autowired
     UserCode userCode;
@@ -63,7 +67,7 @@ public class SendController {
         Map<String, WxTemplateDataDto> map = new HashMap<>(5);
         //根据从小程序中的模板获取的参数，进行赋值
         map.put("thing1", new WxTemplateDataDto("药品"));
-        map.put("time2", new WxTemplateDataDto("时间"));
+        map.put("time2", new WxTemplateDataDto(LocalDateTime.now().format(YYYY_MM_DD)));
         map.put("phrase3", new WxTemplateDataDto("状态"));
         map.put("thing5", new WxTemplateDataDto("患者姓名"));
         wxMsgDto.setData(map);
