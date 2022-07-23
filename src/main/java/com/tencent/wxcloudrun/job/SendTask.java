@@ -20,7 +20,7 @@ public class SendTask {
     @Autowired
     SendService sendService;
 
-    @Scheduled(cron = "0 30 9,12,19 * * ? ")
+    @Scheduled(cron = "0 50 9,12,20 * * ? ")
     public void haha() {
         log.info("job start ==================");
         sendService.sendTemplate();
