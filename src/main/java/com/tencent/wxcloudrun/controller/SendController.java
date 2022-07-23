@@ -24,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class SendController {
 
-    public static final DateTimeFormatter YYYY_MM_DD_HH_MM_SS = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+    public static final DateTimeFormatter YYYY_MM_DD_HH_MM = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm");
 
     @Autowired
     UserCode userCode;
@@ -67,7 +67,7 @@ public class SendController {
         Map<String, WxTemplateDataDto> map = new HashMap<>(5);
         //根据从小程序中的模板获取的参数，进行赋值
         map.put("thing1", new WxTemplateDataDto("药品"));
-        map.put("time2", new WxTemplateDataDto(LocalDateTime.now().format(YYYY_MM_DD_HH_MM_SS)));
+        map.put("time2", new WxTemplateDataDto(LocalDateTime.now().format(YYYY_MM_DD_HH_MM)));
         map.put("phrase3", new WxTemplateDataDto("状态"));
         map.put("thing5", new WxTemplateDataDto("患者姓名"));
         wxMsgDto.setData(map);
