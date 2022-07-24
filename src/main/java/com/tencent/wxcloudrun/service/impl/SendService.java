@@ -1,9 +1,9 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.tencent.wxcloudrun.dto.WechatAppToken;
 import com.tencent.wxcloudrun.dto.WxMsgDto;
 import com.tencent.wxcloudrun.dto.WxTemplateDataDto;
+import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.util.RestTemplateUtil;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -11,8 +11,8 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,21 +29,22 @@ public class SendService {
     RobotTokenComponent robotTokenComponent;
 
     @Autowired
-    UserCodeService userCodeService;
+    UserService userService;
 
     public void sendTemplate() {
-        Set<WechatAppToken> set = userCodeService.getWechatAppTokenDtoList();
-        log.info("send:{}", JSON.toJSONString(set));
-        set.forEach(wechatAppToken -> sendVlogCompleteTemplateMsg(wechatAppToken.getOpenid()));
+        List<User> list = userService.getUser();
+        log.info("send:{}", JSON.toJSONString(list));
+        list.forEach(user -> sendVlogCompleteTemplateMsg(user.getOpenid()));
     }
+
 
     /**
      * 发送视频完成模板消息
      *
-     * @param openId 用户的openId
+     * @param openid 用户的openId
      * @return 结果。发送成功，返回值实例：{"errcode":0,"errmsg":"ok","msgid":11111}
      */
-    public String sendVlogCompleteTemplateMsg(String openId) {
+    public String sendVlogCompleteTemplateMsg(String openid) {
         RestTemplate restTemplate = RestTemplateUtil.getInstance();
         //发送订阅消息的url，官网地址：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html
         String url =
@@ -52,7 +53,7 @@ public class SendService {
         //拼接推送的模版
         WxMsgDto wxMsgDto = new WxMsgDto();
         //用户的openid（要发送给的那个用户）
-        wxMsgDto.setTouser(openId);
+        wxMsgDto.setTouser(openid);
         //订阅消息模板id
         wxMsgDto.setTemplate_id("LtP5EeXT9QYlnfcgAgFI9b2r-d8LNmlt7P-Tt-nz9sk");
         //点击消息跳转的页面
