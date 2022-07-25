@@ -71,13 +71,13 @@ public class SendService {
         wxMsgDto.setData(map);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url + accessToken, wxMsgDto, String.class);
         String body = responseEntity.getBody();
-        log.info("sendVlogCompleteTemplateMsg:{}", body);
+        log.info("sendVlogCompleteTemplateMsg:{},openid:{}", body, openid);
         JSONObject object = JSON.parseObject(body);
         if (object.containsKey("errcode") && object.getInteger("errcode").equals(40001)) {
             body = restTemplate.postForEntity(
                     url + robotTokenComponent.forceRefreshToken(System.currentTimeMillis()), wxMsgDto, String.class)
                 .getBody();
-            log.info("sendVlogCompleteTemplateMsg force refresh:{}", body);
+            log.info("sendVlogCompleteTemplateMsg force refresh:{},openid:{}", body, openid);
         }
         return body;
     }
