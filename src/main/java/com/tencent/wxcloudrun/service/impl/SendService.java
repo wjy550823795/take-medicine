@@ -45,7 +45,7 @@ public class SendService {
         List<String> keyList = new ArrayList<>();
         keyList.add(key1);
         for (String key : keyList) {
-            String title = "王馋馋吃药了喔，要照顾好自己";
+            String title = "王馋馋吃药了喔，要照顾好自己!!";
             String url =
                 "https://sctapi.ftqq.com/" + key + ".send?title=" + title;
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
