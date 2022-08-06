@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +41,16 @@ public class SendService {
 
     public void sendFangTang() {
         RestTemplate restTemplate = RestTemplateUtil.getInstance();
-        String key = "SCT163739TNEUpJPwPOcDl8pv1dhK3GrVU";
-        String url =
-            "https://sctapi.ftqq.com/" + key + ".send?title=吃药了";
-
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
-        log.info("responseEntity:{}", responseEntity.getBody());
+        String key1 = "SCT163739TNEUpJPwPOcDl8pv1dhK3GrVU";
+        List<String> keyList = new ArrayList<>();
+        keyList.add(key1);
+        for (String key : keyList) {
+            String title = "王馋馋吃药了喔，要照顾好自己";
+            String url =
+                "https://sctapi.ftqq.com/" + key + ".send?title=" + title;
+            ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
+            log.info("key:{},responseEntity:{}", key, responseEntity.getBody());
+        }
     }
 
 

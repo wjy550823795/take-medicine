@@ -22,7 +22,8 @@ public class SendTask {
     @Scheduled(cron = "0 50 9,12,20 * * ? ", zone = "Asia/Shanghai")
     public void haha() {
         log.info("job start ==================");
-        sendService.sendTemplate();
+        //sendService.sendTemplate();
+        sendService.sendFangTang();
         log.info("job end ==================");
     }
 }
