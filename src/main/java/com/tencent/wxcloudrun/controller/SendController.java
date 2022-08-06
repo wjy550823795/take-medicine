@@ -24,6 +24,11 @@ public class SendController {
         sendService.sendTemplate();
     }
 
+    @PostMapping("/sendFangTang")
+    public void sendFangTang() {
+        sendService.sendFangTang();
+    }
+
     @GetMapping("/setCode")
     public void send(String code) {
         userService.setCode(code);
