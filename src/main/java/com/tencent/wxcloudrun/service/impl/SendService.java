@@ -42,8 +42,10 @@ public class SendService {
     public void sendFangTang() {
         RestTemplate restTemplate = RestTemplateUtil.getInstance();
         String key1 = "SCT163739TNEUpJPwPOcDl8pv1dhK3GrVU";
+        String key2 = "SCT164144TMbs2ZyAtOXdhY1KZNCV2I2CY";
         List<String> keyList = new ArrayList<>();
         keyList.add(key1);
+        keyList.add(key2);
         for (String key : keyList) {
             String title = "王馋馋吃药了喔，要照顾好自己!!";
             String url =
