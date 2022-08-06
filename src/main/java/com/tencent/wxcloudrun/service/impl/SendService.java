@@ -42,12 +42,9 @@ public class SendService {
         RestTemplate restTemplate = RestTemplateUtil.getInstance();
         String key = "SCT163739TNEUpJPwPOcDl8pv1dhK3GrVU";
         String url =
-            "https://sctapi.ftqq.com/" + key + ".send";
+            "https://sctapi.ftqq.com/" + key + ".send?title=吃药了";
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("title", "1");
-        map.put("channel", 9);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, map, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
         log.info("responseEntity:{}", responseEntity.getBody());
     }
 
