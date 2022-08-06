@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * 定时任务，主类加上@Component和@EnableScheduling注解，在方法上加上@Scheduled注解 注意的是，可以加个开关来决定任务是否执行
  */
 @Slf4j
-//@Component
+@Component
 @EnableScheduling
 public class SendTask {
 
